@@ -1,5 +1,12 @@
 # Changelog
 
+## [This fork](https://github.com/TxAnton/llama-cpp-docker) - 2024-04-07
+- Separated CPU and GPU builds, docker-compose's, .env's etc.
+- Put models download in separate script
+- Put more parameters in enviroment files such as container tag, port, threads
+Only tested on CPU
+
+
 ## [v1.4.0](https://github.com/fboulnois/llama-cpp-docker/compare/v1.3.1...v1.4.0) - 2024-03-05
 
 ### Fixed

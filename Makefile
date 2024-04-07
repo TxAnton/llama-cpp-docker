@@ -1,30 +1,28 @@
+include .env
 USE_SUDO := $(shell which docker >/dev/null && docker ps 2>&1 | grep -q "permission denied" && echo sudo)
 DOCKER := $(if $(USE_SUDO), sudo docker, docker)
-DIRNAME := $(notdir $(CURDIR))
-HAS_NVIDIA_GPU := $(shell which nvidia-smi >/dev/null && nvidia-smi --query --display=COMPUTE && echo ok)
+DOCKER_COMPOSE := $(if $(USE_SUDO), sudo docker-compose, docker-compose)
 
-build:
-ifdef HAS_NVIDIA_GPU
-	$(DOCKER) build . --tag $(DIRNAME)
-else
-	$(DOCKER) build . --file Dockerfile-cpu --tag $(DIRNAME)
-endif
+build-gpu:
+	$(DOCKER) build . --tag $(IMAGE_TAG)
+
+build-cpu:
+	$(DOCKER) build . --file Dockerfile-cpu --tag $(IMAGE_TAG)
 
 llama-2-13b:
-	cd models && ../docker-entrypoint.sh $@
+	cd models && ../get_model.sh $@
 
 mistral-7b:
-	cd models && ../docker-entrypoint.sh $@
+	cd models && ../get_model.sh $@
 
 solar-10b:
-	cd models && ../docker-entrypoint.sh $@
+	cd models && ../get_model.sh $@
 
-up:
-ifdef HAS_NVIDIA_GPU
-	$(DOCKER) compose -f docker-compose.yml -f docker-compose.gpu.yml up
-else
-	$(DOCKER) compose -f docker-compose.yml up
-endif
+up-gpu:
+	$(DOCKER_COMPOSE) --env-file .env -f docker-compose.yml -f docker-compose.gpu.yml up
+
+up-cpu:
+	$(DOCKER_COMPOSE) --env-file .env -f docker-compose.yml -f docker-compose.cpu.yml up
 
 down:
-	$(DOCKER) compose down
+	$(DOCKER_COMPOSE) down

@@ -1,3 +1,5 @@
+Based on https://github.com/fboulnois/llama-cpp-docker  
+
 # Llama.cpp in Docker
 
 Run [llama.cpp](https://github.com/ggerganov/llama.cpp) in a GPU accelerated
@@ -9,15 +11,37 @@ By default, the service requires a CUDA capable GPU with at least 8GB+ of VRAM.
 If you don't have an Nvidia GPU with CUDA then the CPU version will be built and
 used instead.
 
-## Quickstart
+## Usage
+
+First download model into `models/` dir  
+```bash
+make llama-2-13b
+```  
+Other options are: llama-2-13b, mistral-7b, solar-10b  
+or download model manualy  
+
+In `.env` file set model path  
+
+**For CPU:**  
+In `cpu.env` file set number of threads for inference  
 
 ```bash
-make build
-make llama-2-13b
-make up
+make build-cpu
+make up-cpu
+```  
+
+**For GPU:**(untested)  
+
+```bash
+make build-gpu
+make up-gpu
 ```
 
-After starting up the chat server will be available at `http://localhost:8080`.
+
+
+
+By default after starting up the chat server will be available at `http://localhost:8080`.  
+See .env for other options  
 
 ## Options
 
@@ -46,3 +70,4 @@ accuracy.
 | llama-2-13b | [`llama-2-13b-chat`](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF) | 13B | 11.73 GB | 53.26 |
 | mistral-7b | [`mistral-7b-instruct-v0.2`](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF) | 7B | 7.63 GB | 65.71 |
 | solar-10b | [`solar-10.7b-instruct-v1.0`](https://huggingface.co/TheBloke/SOLAR-10.7B-Instruct-v1.0-GGUF) | 10.7B | 10.10 GB | 74.2 |
+
