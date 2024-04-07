@@ -15,7 +15,6 @@ FROM debian:12-slim AS env-deploy
 COPY --from=0 /usr/local/cuda/lib64/libcublas.so.12 /usr/lib/x86_64-linux-gnu
 COPY --from=0 /usr/local/cuda/lib64/libcublasLt.so.12 /usr/lib/x86_64-linux-gnu
 COPY --from=0 /usr/local/cuda/lib64/libcudart.so.12 /usr/lib/x86_64-linux-gnu
-COPY --from=0 /usr/local/cuda/lib64/libcuda.so.1 /usr/lib/x86_64-linux-gnu
 
 # copy llama.cpp binaries
 COPY --from=0 /srv/llama.cpp/main /usr/local/bin/llama
